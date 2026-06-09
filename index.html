@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jared Therapy — Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0c0c;
+    --surface: #111111;
+    --accent: #e8952a;
+    --accent-dim: rgba(232,149,42,0.15);
+    --text: #f0ede8;
+    --muted: #6b6762;
+    --divider: rgba(255,255,255,0.08);
+    --nav-w: 260px;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── Side Nav ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--nav-w);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 32px;
+    border-right: 1px solid var(--divider);
+    z-index: 100;
+  }
+
+  .nav-logo {
+    position: absolute;
+    top: 36px; left: 32px;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .nav-list { list-style: none; }
+
+  .nav-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--divider);
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .nav-list li:first-child { border-top: 1px solid var(--divider); }
+
+  .nav-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    transition: color 0.2s;
+    min-width: 20px;
+  }
+
+  .nav-label {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+
+  .nav-list li.active .nav-num { color: var(--accent); }
+  .nav-list li.active .nav-label { color: var(--text); font-weight: 500; }
+  .nav-list li:hover .nav-label { color: var(--text); }
+
+  .nav-indicator {
+    position: absolute;
+    left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--accent);
+    transition: top 0.3s ease, height 0.3s ease;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ── Main ── */
+  main {
+    margin-left: var(--nav-w);
+    flex: 1;
+    position: relative;
+  }
+
+  /* Slide counter */
+  .slide-counter {
+    position: fixed;
+    top: 32px; right: 40px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    z-index: 100;
+  }
+  .slide-counter span { color: var(--text); }
+
+  /* ── Slides ── */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 80px 80px 80px;
+    position: relative;
+  }
+
+  .slide-inner { max-width: 860px; width: 100%; }
+
+  /* eyebrow label */
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 2px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* headings */
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(52px, 6vw, 80px);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 28px;
+  }
+  h2 em { font-style: italic; color: var(--accent); }
+
+  h3 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+
+  .lead {
+    font-size: 17px;
+    font-style: italic;
+    color: rgba(240,237,232,0.65);
+    line-height: 1.7;
+    max-width: 620px;
+    margin-bottom: 48px;
+    font-family: var(--serif);
+  }
+
+  .divider {
+    width: 48px;
+    height: 2px;
+    background: var(--accent);
+    margin-bottom: 48px;
+  }
+
+  /* numbered list */
+  .num-list { list-style: none; }
+
+  .num-list li {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 0 24px;
+    padding: 24px 0;
+    border-top: 1px solid var(--divider);
+  }
+  .num-list li:last-child { border-bottom: 1px solid var(--divider); }
+
+  .num-list .n {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding-top: 4px;
+  }
+
+  .num-list strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .num-list p {
+    font-size: 14px;
+    color: rgba(240,237,232,0.55);
+    line-height: 1.65;
+  }
+
+  /* cards grid */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 4px;
+    padding: 28px 24px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(232,149,42,0.3); }
+
+  .card-icon {
+    font-size: 22px;
+    margin-bottom: 14px;
+  }
+
+  .card h3 {
+    font-family: var(--serif);
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .card p {
+    font-size: 13px;
+    color: rgba(240,237,232,0.5);
+    line-height: 1.65;
+  }
+
+  /* two-col */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 8px;
+  }
+
+  .col-head {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .check-list { list-style: none; }
+  .check-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--divider);
+    font-size: 14px;
+    color: rgba(240,237,232,0.7);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .check-list li::before {
+    content: '';
+  }
+
+  /* tags */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .tag {
+    background: var(--accent-dim);
+    border: 1px solid rgba(232,149,42,0.25);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 6px 14px;
+    border-radius: 2px;
+  }
+
+  /* color swatch */
+  .swatch-row { display: flex; gap: 16px; margin-top: 24px; }
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .swatch-block {
+    width: 64px;
+    height: 64px;
+    border-radius: 4px;
+    border: 1px solid var(--divider);
+  }
+
+  /* pages list */
+  .pages-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .page-item {
+    background: var(--surface);
+    border: 1px solid var(--divider);
+    border-radius: 4px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .page-num {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  .page-name {
+    font-family: var(--serif);
+    font-size: 18px;
+  }
+
+  /* result stat row */
+  .stat-row { display: flex; gap: 48px; margin-top: 40px; }
+  .stat { }
+  .stat-val {
+    font-family: var(--serif);
+    font-size: 48px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* quote block */
+  .quote {
+    border-left: 3px solid var(--accent);
+    padding: 16px 24px;
+    margin-top: 32px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 20px;
+    color: rgba(240,237,232,0.75);
+    line-height: 1.5;
+  }
+
+  /* hero slide special layout */
+  #slide-1 { align-items: center; }
+  #slide-1 .slide-inner { max-width: 100%; }
+
+  /* audience pills */
+  .audience { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+  .aud-pill {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--divider);
+    font-size: 13px;
+    padding: 8px 18px;
+    border-radius: 100px;
+    color: rgba(240,237,232,0.7);
+  }
+
+  /* slide separator line */
+  .slide + .slide { border-top: 1px solid var(--divider); }
+
+  /* fade-in on scroll */
+  .fade { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<!-- Side Navigation -->
+<nav>
+  <div class="nav-indicator" id="navIndicator"></div>
+  <ul class="nav-list" id="navList">
+    <li class="active" data-target="slide-1">
+      <span class="nav-num">01</span>
+      <span class="nav-label">Overview</span>
+    </li>
+    <li data-target="slide-2">
+      <span class="nav-num">02</span>
+      <span class="nav-label">Client Brief</span>
+    </li>
+    <li data-target="slide-3">
+      <span class="nav-num">03</span>
+      <span class="nav-label">Research</span>
+    </li>
+    <li data-target="slide-4">
+      <span class="nav-num">04</span>
+      <span class="nav-label">Design</span>
+    </li>
+    <li data-target="slide-5">
+      <span class="nav-num">05</span>
+      <span class="nav-label">Structure</span>
+    </li>
+    <li data-target="slide-6">
+      <span class="nav-num">06</span>
+      <span class="nav-label">Live Demo</span>
+    </li>
+  </ul>
+</nav>
+
+<!-- Slide Counter -->
+<div class="slide-counter">
+  <span id="counterCurrent">01</span> / <span id="counterTotal">06</span>
+</div>
+
+<main id="mainContent">
+
+  <!-- 01 Overview -->
+  <section class="slide" id="slide-1" data-index="1">
+    <div class="slide-inner">
+      <div class="eyebrow fade">Overview</div>
+      <h1 class="fade">A Therapy Website<br><em>Built for Real Connection.</em></h1>
+      <p class="lead fade">One client. One goal: replacing a scattered online presence with a warm, trustworthy, and conversion-ready therapy website.</p>
+      <div class="divider fade"></div>
+      <div class="cards fade">
+        <div class="card">
+            <h3>The Client</h3>
+          <p>Jared — a licensed therapist serving teens, young adults, and men looking for mental health support.</p>
+        </div>
+        <div class="card">
+            <h3>The Goal</h3>
+          <p>Emotional approach + enough clear information. Build trust before the first session even begins.</p>
+        </div>
+        <div class="card">
+            <h3>Audience</h3>
+          <p>Teens, young adults, men, and parents making therapy decisions for their children.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 Client Brief -->
+  <section class="slide" id="slide-2" data-index="2">
+    <div class="slide-inner">
+      <div class="eyebrow fade">Client Brief</div>
+      <h2 class="fade">What Jared<br><em>Needed.</em></h2>
+      <div class="divider fade"></div>
+      <div class="fade">
+        <div class="col-head">Client Requests</div>
+        <ul class="check-list">
+          <li>Emotional approach</li>
+          <li>Less text-heavy content</li>
+          <li>Clear focus on teens, young adults and parents</li>
+          <li>Easy contact process</li>
+          <li>Trust-building elements throughout</li>
+        </ul>
+      </div>
+      <div class="quote fade">"Every page should make someone feel safe enough to reach out."</div>
+    </div>
+  </section>
+
+  <!-- 03 Research & Strategy -->
+  <section class="slide" id="slide-3" data-index="3">
+    <div class="slide-inner">
+      <div class="eyebrow fade">Research &amp; Strategy</div>
+      <h2 class="fade">Designing for<br><em>Everyone.</em></h2>
+      <div class="divider fade"></div>
+      <ul class="num-list fade">
+        <li>
+          <span class="n">01</span>
+          <div>
+            <strong>Multi-generational reach</strong>
+            <p>Jared works with young children, teenagers, and their parents — each group needed a resonant experience. We designed for all three simultaneously.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">02</span>
+          <div>
+            <strong>Inclusive for all genders</strong>
+            <p>As a male therapist, Jared's brand needed to feel welcoming to both men and women. Messaging and visuals were balanced to avoid any sense of exclusion.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">03</span>
+          <div>
+            <strong>Key findings from therapy UX research</strong>
+            <p>Trust is the first conversion. Clear calls-to-action dramatically improve engagement. Branding must feel approachable, not clinical.</p>
+          </div>
+        </li>
+      </ul>
+      <div class="tag-row fade">
+        <span class="tag">Young Men</span>
+        <span class="tag">Teenagers</span>
+        <span class="tag">Parents</span>
+        <span class="tag">Men</span>
+        <span class="tag">User-Centered Design</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Design Concept -->
+  <section class="slide" id="slide-4" data-index="4">
+    <div class="slide-inner">
+      <div class="eyebrow fade">Design Concept</div>
+      <h2 class="fade">Brand Direction &amp;<br><em>Color Choice.</em></h2>
+      <div class="divider fade"></div>
+      <div class="two-col fade">
+        <div>
+          <div class="col-head">Brand Direction</div>
+          <ul class="check-list">
+            <li>Mountain · strength &amp; stability</li>
+            <li>Breathing · calm &amp; present moment</li>
+            <li>Freedom · space to heal</li>
+            <li>Growth · forward momentum</li>
+          </ul>
+        </div>
+        <div>
+          <div class="col-head">Color Rationale</div>
+          <p style="font-size:14px; color:rgba(240,237,232,0.6); line-height:1.7; margin-bottom: 20px;">
+            Green was chosen as the primary palette: calming, trustworthy, gender-neutral, and naturally aligned with the therapeutic environment.
+          </p>
+          <div class="swatch-row">
+            <div class="swatch">
+              <div class="swatch-block" style="background:#252525;"></div>
+              Charcoal
+            </div>
+            <div class="swatch">
+              <div class="swatch-block" style="background:#2d4a3e;"></div>
+              Dark Green
+            </div>
+            <div class="swatch">
+              <div class="swatch-block" style="background:#7a7d5a;"></div>
+              Olive
+            </div>
+            <div class="swatch">
+              <div class="swatch-block" style="background:#cfc9b5;"></div>
+              Warm Beige
+            </div>
+            <div class="swatch">
+              <div class="swatch-block" style="background:#f4f2ec; border-color: rgba(255,255,255,0.15);"></div>
+              Off-White
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 Website Structure -->
+  <section class="slide" id="slide-5" data-index="5">
+    <div class="slide-inner">
+      <div class="eyebrow fade">Website Structure</div>
+      <h2 class="fade">Website <em>Structure</em></h2>
+      <div class="divider fade"></div>
+      <div class="pages-grid fade">
+        <div class="page-item">
+          <div class="page-num">01</div>
+          <div class="page-name">Home</div>
+        </div>
+        <div class="page-item">
+          <div class="page-num">02</div>
+          <div class="page-name">About Jared</div>
+        </div>
+        <div class="page-item">
+          <div class="page-num">03</div>
+          <div class="page-name">Services</div>
+        </div>
+        <div class="page-item">
+          <div class="page-num">04</div>
+          <div class="page-name">Contact</div>
+        </div>
+      </div>
+      <ul class="num-list fade" style="margin-top: 40px;">
+        <li>
+          <span class="n">01</span>
+          <div>
+            <strong>Testimonials</strong>
+            <p>Social proof placed strategically to reduce hesitation and build credibility.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">02</span>
+          <div>
+            <strong>Insurance Information</strong>
+            <p>Practical information surfaced early — removing a common barrier to booking.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">03</span>
+          <div>
+            <strong>CTA Buttons &amp; Contact Form</strong>
+            <p>Every page includes a clear call-to-action guiding visitors toward the next step.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 06 Live Demo -->
+  <section class="slide" id="slide-6" data-index="6">
+    <div class="slide-inner">
+      <h1 class="fade" style="font-size:clamp(64px,8vw,100px);line-height:1;">Live<br><em style="color:#e8952a;">Demo.</em></h1>
+      <p class="fade" style="font-family:var(--serif);font-style:italic;font-size:18px;color:rgba(240,237,232,0.5);margin-top:32px;letter-spacing:0.01em;">
+        Homepage · About · Services · Contact
+      </p>
+      <div class="fade" style="margin-top:48px;">
+        <a href="#" style="display:inline-flex;align-items:center;gap:12px;border:1.5px solid #e8952a;color:#e8952a;font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;padding:16px 32px;transition:background 0.2s;" onmouseover="this.style.background='rgba(82,183,136,0.1)'" onmouseout="this.style.background='transparent'">
+          <span style="width:8px;height:8px;border-radius:50%;background:#e8952a;display:inline-block;"></span>
+          Live demonstration
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const navItems = document.querySelectorAll('.nav-list li');
+  const counterCurrent = document.getElementById('counterCurrent');
+  const counterTotal = document.getElementById('counterTotal');
+  const fades = document.querySelectorAll('.fade');
+
+  counterTotal.textContent = String(slides.length).padStart(2, '0');
+
+
+  // Scroll-spy
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = parseInt(entry.target.dataset.index, 10);
+        counterCurrent.textContent = String(idx).padStart(2, '0');
+        navItems.forEach((li, i) => li.classList.toggle('active', i === idx - 1));
+      }
+    });
+  }, { threshold: 0.45 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // Fade observer
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  fades.forEach(f => fadeObserver.observe(f));
+
+  // Nav click
+  navItems.forEach(li => {
+    li.addEventListener('click', () => {
+      const target = document.getElementById(li.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
